@@ -74,7 +74,7 @@ public class RiversDAO {
 	}
 
 	public List<Flow> getFlows(River river) {
-		final String sql = "SELECT f.id, f.day AS data, f.flow AS flow "
+		final String sql = "SELECT f.day AS data, f.flow AS flow "
 				+ "FROM flow f "
 				+ "WHERE f.river=? "
 				+ "ORDER BY f.day";
@@ -90,7 +90,7 @@ public class RiversDAO {
 			while (res.next()) {
 				LocalDate data = res.getDate("data").toLocalDate();
 				
-				result.add(new Flow(data,res.getDouble("flow"),river));
+				result.add(new Flow(data,res.getDouble("flow")*3600*24,river));
 			}
 
 			conn.close();

@@ -6,14 +6,18 @@ import java.util.PriorityQueue;
 import it.polito.tdp.rivers.model.Evento.EventType;
 
 public class Simulatore {
-	Model model = new Model();
+	Model model ;
 	
 	// Parametri input
 	private double k;
 	private double fMed;
 	private River river;
 	
-	public Simulatore(double k, double fMed, River river) {
+	public Simulatore() {
+		this.model = new Model();
+	}
+	
+	public void setParameters(double k, double fMed, River river) {		
 		this.k = k;
 		this.fMed = fMed*3600*24;
 		this.river = river;
@@ -34,7 +38,7 @@ public class Simulatore {
 	double c_media;
 	
 	public void run() {
-		this.Q = this.k*this.fMed*30;
+		this.Q = this.k*(this.fMed)*30;
 		this.C = Q/2;
 		this.fout_min = 0.8*fMed;
 		this.flows=model.getFlows(this.river);
@@ -62,13 +66,13 @@ public class Simulatore {
 		switch(e.getType()) {
 		case INGRESSO:
 			// Aggiorno la capienza corrente
-			this.C += e.getFlow().getFlow()*3600*24;
+			this.C += e.getFlow().getFlow();
 			
-			if(C>Q) { // --> TRACIMAZIONE
+			if(this.C>this.Q) { // --> TRACIMAZIONE
 				this.eventi.add(new Evento(e.getData(),EventType.TRACIMAZIONE,e.getFlow()));
 			}
 			
-			int p = (int)Math.random()*100;
+			int p = (int) (Math.random()*100);
 			if(p<5) { // --> IRRIGAZIONE
 				this.eventi.add(new Evento(e.getData(),EventType.IRRIGAZIONE,e.getFlow()));
 			}
@@ -93,7 +97,7 @@ public class Simulatore {
 			break;
 			
 		case IRRIGAZIONE:
-			this.fout = this.fout_min*10;
+			this.fout = 10*this.fout_min;
 			if(this.C<this.fout) { // Irrigazione non possibile (o parzialmente possibile)
 				this.numGiorniDiss++;
 				this.C=0;

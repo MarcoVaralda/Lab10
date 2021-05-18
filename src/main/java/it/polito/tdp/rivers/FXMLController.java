@@ -80,8 +80,9 @@ public class FXMLController {
     		return;
     	}
     	
-    	s = new Simulatore(k,Double.parseDouble(this.txtFMed.getText()),this.boxRiver.getValue());
-    	s.run();
+    	this.s = new Simulatore();
+    	this.s.setParameters(k,Double.parseDouble(this.txtFMed.getText()),this.boxRiver.getValue());
+    	this.s.run();
     	
     	this.txtResult.appendText("Numero giorni disservizio: "+s.getGiorniDisservizio() +"\n");
     	this.txtResult.appendText("Occupazione media: "+s.getOccupazioneMedia());
