@@ -25,19 +25,8 @@ public class Model {
 	}
 	
 	
-	// Simulatore
-	
-	public void simula(double k, Misurazione m) {
-		
-		// Parametri di simulazione
-		double Q = k*m.getMedia()*30;
-		double C = Q/2;
-		double fout = 0.8*m.getMedia();
-		List<Flow> flows = dao.getFlows(m.getRiver());
-		
-		Simulatore s = new Simulatore();
-		s.init(Q,C,fout,flows, m.getPrimaData(), m.getUltimaData());
-		
+	public List<Flow> getFlows(River r) {
+		return dao.getFlows(r);
 	}
 
 }

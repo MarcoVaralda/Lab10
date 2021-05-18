@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import it.polito.tdp.rivers.model.Misurazione;
 import it.polito.tdp.rivers.model.Model;
 import it.polito.tdp.rivers.model.River;
+import it.polito.tdp.rivers.model.Simulatore;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -20,6 +21,7 @@ import javafx.event.ActionEvent;
 public class FXMLController {
 	
 	private Model model;
+	private Simulatore s;
 	
 	Misurazione m;
 
@@ -66,17 +68,23 @@ public class FXMLController {
     
     @FXML
     void doSimula(ActionEvent event) {
+    	this.txtResult.clear();
+    	
     	String stringFattore = this.txtK.getText();
-    	double fattoreDiScala=-1;
+    	double k=-1;
     	try {
-    		fattoreDiScala = Double.parseDouble(stringFattore);
+    		k = Double.parseDouble(stringFattore);
     	}
     	catch(NumberFormatException nbe) {
     		this.txtResult.setText("Errore! inserire un numero nel campo fattore di scala");
     		return;
     	}
     	
-    	model.simula(fattoreDiScala, m);
+    	s = new Simulatore(k,Double.parseDouble(this.txtFMed.getText()),this.boxRiver.getValue());
+    	s.run();
+    	
+    	this.txtResult.appendText("Numero giorni disservizio: "+s.getGiorniDisservizio() +"\n");
+    	this.txtResult.appendText("Occupazione media: "+s.getOccupazioneMedia());
     	
     }
 

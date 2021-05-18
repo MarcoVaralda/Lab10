@@ -5,17 +5,28 @@ import java.time.LocalDate;
 public class Evento implements Comparable<Evento> {
 	
 	public enum EventType {
-		FLUSSO_IN_INGRESSO,
-		FLUSSO_IN_USCITA,
-		TRACIMAZIONE
+		INGRESSO,
+		USCITA,
+		TRACIMAZIONE,
+		IRRIGAZIONE
 	}
 	
 	private LocalDate data;
+	private Flow flow;
 	private EventType type;
 	
-	public Evento(LocalDate data, EventType type) {
+	public Evento(LocalDate data, EventType type, Flow flow) {
 		this.data = data;
 		this.type = type;
+		this.flow=flow;
+	}
+
+	public Flow getFlow() {
+		return flow;
+	}
+
+	public void setFlow(Flow flow) {
+		this.flow = flow;
 	}
 
 	public LocalDate getData() {
@@ -40,11 +51,15 @@ public class Evento implements Comparable<Evento> {
 	}
 
 	@Override
-	public int compareTo(Evento altro) {
-		if(this.data.compareTo(altro.getData())<0) {
-			return -1;
-		}	
-		return 1;
+	public int compareTo(Evento o) {
+		if(this.data.equals(o.data)) {
+			if(this.type == EventType.INGRESSO)
+				return -1;
+			else
+				return 1;
+		}
+		else
+			return this.data.compareTo(o.data);
 	}
 
 }
